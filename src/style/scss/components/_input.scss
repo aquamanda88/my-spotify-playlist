@@ -1,0 +1,55 @@
+/** input 主體 */
+.default-input {
+  @extend %input-rounded-border;
+
+  &:focus {
+    @extend %common-focus;
+  }
+
+  &:disabled {
+    color: $gray-500;
+  }
+
+  &::-webkit-input-placeholder {
+    color: $gray-500;
+  }
+
+  &::-moz-placeholder {
+    color: $gray-500;
+  }
+
+  &:-ms-input-placeholder {
+    color: $gray-500;
+  }
+
+  &::-ms-input-placeholder {
+    color: $gray-500;
+  }
+
+  &::placeholder {
+    color: $gray-500;
+  }
+}
+
+.single-form {
+  .input-item {
+    position: relative;
+    margin-bottom: 40px;
+  }
+}
+
+.form-check-item label {
+  margin-left: 8px;
+}
+
+.form-check-input {
+  background-color: $gray-500;
+  border-color: $gray-400;
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.untitled-item {
+  padding: 12px 0;
+}

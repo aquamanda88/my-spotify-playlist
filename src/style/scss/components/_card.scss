@@ -1,0 +1,57 @@
+/** 繼承樣式 - card */
+%common-board {
+  .card-header,
+  .card-body {
+    padding: 0;
+  }
+}
+
+/** 繼承樣式 - operation-board */
+%common-operation-board {
+  margin-bottom: 32px;
+  text-align: start;
+  h3 {
+    margin-bottom: 24px;
+  }
+  button {
+    display: flex;
+    width: 100%;
+  }
+  .card-body {
+    .form-check-list div:nth-child(n + 2) {
+      margin-left: 24px;
+    }
+  }
+}
+
+/** 單一條件操作區塊 board 主體 */
+.single-operation-board {
+  @include card-rounded-border(24px, 24px, $gray-600);
+  @extend %common-board;
+  @extend %common-operation-board;
+  .card-body {
+    .input-item {
+      margin-bottom: 24px;
+    }
+    .col-12:not(:last-child) .form-check-group {
+      margin-bottom: 24px;
+    }
+    .font-zh-p-medium {
+      @include text-color($gray-300);
+    }
+    .form-check-label {
+      @include text-color($gray-100);
+    }
+  }
+}
+
+.row {
+  .button-adjust {
+    display: flex;
+    align-items: center;
+
+    .btn-adjust {
+      margin-top: 10px;
+    }
+  }
+}

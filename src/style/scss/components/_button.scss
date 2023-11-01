@@ -1,0 +1,26 @@
+/** 各 button 共用樣式 */
+.btn {
+  p {
+    margin: 0 4px 0 0;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/** block 型按鈕 */
+// secondary 樣式
+.btn-main {
+  @include btn-rounded-border(12px, 0);
+  @include bg-color($main);
+
+  color: $white;
+  &:hover {
+    @include common-hover($white);
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}

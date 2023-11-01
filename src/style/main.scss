@@ -1,0 +1,29 @@
+// bootstrap
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+// helpers
+@import "/src/style/scss/helpers/variables";
+@import "/src/style/scss/helpers/mixins";
+
+// base
+@import "/src/style/scss/base/base";
+@import "/src/style/scss/base/typography";
+
+// components
+@import "/src/style/scss/components/input";
+@import "/src/style/scss/components/button";
+@import "/src/style/scss/components/card";
+@import "/src/style/scss/components/select";
+
+.w-12 {
+  width: 12%;
+}
+.songName {
+  display: block;
+}
+.contentInfo {
+  text-align: start;
+  p {
+    margin: 0;
+  }
+}

@@ -1,0 +1,86 @@
+/** 繼承樣式 - select */
+%search-rounded-border {
+  @extend %input-rounded-border;
+
+  padding: 12px 45px 12px 24px;
+  border-radius: 8px;
+}
+
+/** select 主體 */
+.default-select {
+  @extend %input-rounded-border;
+  &:focus {
+    @extend %common-focus;
+
+    .icon-arrow-down-gray {
+      transition: 0.3s;
+      transform: rotate(180deg);
+
+      &.not-active {
+        transition: 0.3s;
+        transform: none;
+      }
+    }
+  }
+  &:not(:focus) {
+    .icon-arrow-down-gray {
+      transition: 0.3s;
+    }
+  }
+  &:disabled {
+    color: $gray-500;
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+
+  p {
+    width: 280px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.placeholder {
+    color: $gray-600;
+  }
+}
+.menuBoard {
+  max-height: 150px;
+  overflow-y: auto;
+}
+.dropdown-menu {
+  @include dropdown-rounded-border(24px, 24px, 24px);
+  width: 100%;
+  .input-item {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .dropdown-search {
+    @extend %search-rounded-border;
+    &:focus {
+      @extend %common-focus;
+    }
+  }
+  .dropdown-items {
+    height: 144px;
+    overflow: auto;
+    .dropdown-item {
+      @include select-rounded-border(8px, 8px, 8px);
+
+      overflow: hidden;
+      font-size: inherit;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &.disabled {
+        color: #999;
+        pointer-events: none;
+      }
+
+      &:hover {
+        background-color: rgb(55 92 166 / 10%);
+        border-radius: 8px;
+      }
+    }
+  }
+}
