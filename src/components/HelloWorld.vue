@@ -21,6 +21,7 @@ const isLogin = ref(false);
 const apiHref = ref("");
 /** 選擇資料筆數 */
 const selectValue = ref("");
+const isActive = ref(false);
 
 /** 排行類型選項 */
 const dataTypeList: Radio[] = [
@@ -177,14 +178,17 @@ function onSubmit() {
 
 <template>
   <div class="container">
-    <a class="btn btn-success mb-4" :href="apiConstant.AUTHORIZATION_URL">
+    <a
+      class="btn btn-main font-en-button mb-4"
+      :href="apiConstant.AUTHORIZATION_URL"
+    >
       <div class="d-flex align-items-center">
         <img
           class="me-2"
           src="../assets/icons/icon_spotify_white.svg"
           alt="spotifyIcon"
         />
-        <span class="text-light">LOGIN</span>
+        <span>LOGIN</span>
       </div>
     </a>
     <div v-if="isLogin">
@@ -259,12 +263,22 @@ function onSubmit() {
                           id="dropdownMenuButton1"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
+                          @blur="isActive = false"
+                          @click="isActive = !isActive"
                         >
-                          {{ selectValue ? selectValue : "請選擇" }}
+                          <div class="d-flex justify-content-between w-100">
+                            <p>{{ selectValue ? selectValue : "請選擇" }}</p>
+                            <img
+                              :class="{ 'not-active': !isActive }"
+                              class="icon-arrow-down-gray"
+                              src="../assets/icons/icon_down_arrow.svg"
+                              alt="arrow"
+                            />
+                          </div>
                         </button>
                         <div class="dropdown-menu">
                           <ul
-                            class="menuBoard"
+                            class="menuBoard dropdown-items"
                             aria-labelledby="dropdownMenuButton1"
                           >
                             <li v-for="radio in countList" :key="radio.value">
@@ -297,7 +311,11 @@ function onSubmit() {
           </div>
         </form>
       </div>
-      <table v-if="apiHref === 'artists'" class="table" data-bs-theme="dark">
+      <table
+        v-if="apiHref === 'artists'"
+        class="table table-hover"
+        data-bs-theme="dark"
+      >
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -310,7 +328,7 @@ function onSubmit() {
           <tr v-for="(item, index) in artistsResult" :key="item.uri">
             <th scope="row">{{ index + 1 }}</th>
             <td>
-              <!-- <img :src="item.images[2].url" alt="artistUrl" /> -->
+              <img :src="item.images[2].url" alt="artistUrl" />
             </td>
             <td class="contentInfo">
               <p class="songName">{{ item.name }}</p>
@@ -331,7 +349,11 @@ function onSubmit() {
           </tr>
         </tbody>
       </table>
-      <table v-if="apiHref === 'tracks'" class="table" data-bs-theme="dark">
+      <table
+        v-if="apiHref === 'tracks'"
+        class="table table-hover"
+        data-bs-theme="dark"
+      >
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -346,7 +368,7 @@ function onSubmit() {
           <tr v-for="(item, index) in tracksResult" :key="item.uri">
             <th scope="row">{{ index + 1 }}</th>
             <td>
-              <!-- <img :src="item.album.images[2].url" alt="albumUrl" /> -->
+              <img :src="item.album.images[2].url" alt="albumUrl" />
             </td>
             <td class="contentInfo">
               <p class="songName">

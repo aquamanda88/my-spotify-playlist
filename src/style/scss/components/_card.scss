@@ -38,9 +38,11 @@
     }
     .font-zh-p-medium {
       @include text-color($gray-300);
+      margin-bottom: 8px;
     }
     .form-check-label {
       @include text-color($gray-100);
+      margin-bottom: 0;
     }
   }
 }

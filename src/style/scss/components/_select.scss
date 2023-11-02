@@ -11,20 +11,20 @@
   @extend %input-rounded-border;
   &:focus {
     @extend %common-focus;
-
+    background-color: $gray-400;
     .icon-arrow-down-gray {
-      transition: 0.3s;
+      transition: 0.2s;
       transform: rotate(180deg);
 
       &.not-active {
-        transition: 0.3s;
+        transition: 0.2s;
         transform: none;
       }
     }
   }
   &:not(:focus) {
     .icon-arrow-down-gray {
-      transition: 0.3s;
+      transition: 0.2s;
     }
   }
   &:disabled {
@@ -34,7 +34,6 @@
   }
 
   p {
-    width: 280px;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -45,12 +44,9 @@
     color: $gray-600;
   }
 }
-.menuBoard {
-  max-height: 150px;
-  overflow-y: auto;
-}
 .dropdown-menu {
-  @include dropdown-rounded-border(24px, 24px, 24px);
+  @include dropdown-rounded-border(24px, 0, 24px);
+  background-color: $gray-500;
   width: 100%;
   .input-item {
     position: relative;
@@ -63,11 +59,11 @@
     }
   }
   .dropdown-items {
-    height: 144px;
-    overflow: auto;
+    max-height: 150px;
+    overflow-y: auto;
     .dropdown-item {
-      @include select-rounded-border(8px, 8px, 8px);
-
+      @include select-rounded-border(8px, 24px, 0);
+      color: $gray-100;
       overflow: hidden;
       font-size: inherit;
       text-overflow: ellipsis;
@@ -78,8 +74,7 @@
       }
 
       &:hover {
-        background-color: rgb(55 92 166 / 10%);
-        border-radius: 8px;
+        background-color: $gray-400;
       }
     }
   }

@@ -23,8 +23,6 @@ export class ApiService {
    * @returns API 回傳的資料
    */
   getAuthorizationToken(code: string) {
-    console.log(isLocalUrl);
-
     const queryString = new URLSearchParams();
     queryString.append("code", code);
     queryString.append("grant_type", "authorization_code");

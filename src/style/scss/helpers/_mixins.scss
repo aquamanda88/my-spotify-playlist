@@ -27,9 +27,10 @@
   border-radius: $border-radius;
   transition: 0.5s;
 }
-@mixin common-hover($color: $white) {
+@mixin common-hover($color, $background-color) {
   color: $color;
   box-shadow: 0 0 20px rgb(45 20 2 / 26%);
+  background-color: rgba($background-color, 75%);
 }
 
 /** Dropdown */
@@ -83,7 +84,6 @@
   border-radius: 24px;
 }
 %common-focus {
-  background-color: $gray-400;
   border: 1px solid $gray-500;
   box-shadow: 0 0 20px rgb(0 0 0 / 8%);
 }
