@@ -1,2 +1,2 @@
 "use strict";(self["webpackChunkmy_spotify_playlist"]=self["webpackChunkmy_spotify_playlist"]||[]).push([[939],{939:function(t,n,s){s.r(n),s.d(n,{default:function(){return f}});var a=s(723);const u={class:"about"},i=(0,a._)("h1",null,"This is an about page",-1),e=[i];function r(t,n){return(0,a.wg)(),(0,a.iD)("div",u,e)}var l=s(896);const c={},o=(0,l.Z)(c,[["render",r]]);var f=o}}]);
-//# sourceMappingURL=939.2948671f.js.map
+//# sourceMappingURL=939.e3c34638.js.map
