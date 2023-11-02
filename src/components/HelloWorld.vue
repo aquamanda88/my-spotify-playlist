@@ -10,7 +10,14 @@ import {
 } from "@/utils/model/user-top-items.model";
 import { onMounted, ref } from "vue";
 import { Radio, Select } from "@/utils/model/user-top-items-utils.model";
+import { basicConstant } from "@/constants/basic.constant";
 
+/** 是否為本地路由 */
+const isLocalUrl = window.location.href.includes("/localhost:8080/");
+/** 目標導向網址 */
+const redirectUri =
+  (isLocalUrl ? basicConstant.DEV_SERVER : basicConstant.PROD_SERVER) +
+  "/my-spotify-playlist";
 /** 演出者播放次數排名 */
 const artistsResult = ref<UserTopReadArtistsRes[]>([]);
 /** 曲目播放次數排名 */
@@ -195,7 +202,11 @@ function onSubmit() {
 
 <template>
   <div class="container">
-    <a v-if="isLogin" class="btn btn-main font-en-button mb-4" href="/">
+    <a
+      v-if="isLogin"
+      class="btn btn-main font-en-button mb-4"
+      :href="redirectUri"
+    >
       <div class="d-flex align-items-center">
         <img
           class="me-2"
