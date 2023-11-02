@@ -1,6 +1,13 @@
-import { apiConstant } from "../constants/api";
-import axiosCustomer from "../utils/api/axios-customization";
+import { basicConstant } from "@/constants/basic.constant";
+import { apiConstant } from "@/constants/api";
+import axiosCustomer from "@/utils/api/axios-customization";
 
+/** 是否為本地路由 */
+const isLocalUrl = window.location.href.includes("/localhost:8080/");
+/** 目標導向網址 */
+const redirectUri = isLocalUrl
+  ? `${basicConstant.DEV_SERVER}/my-spotify-playlist`
+  : `${basicConstant.PROD_SERVER}/my-spotify-playlist`;
 /** 組好的 token 字串 */
 const encodeToken = `Basic ${apiConstant.ENCODE_TOKEN}`;
 /** API 呼叫路徑 */
@@ -16,13 +23,12 @@ export class ApiService {
    * @returns API 回傳的資料
    */
   getAuthorizationToken(code: string) {
+    console.log(isLocalUrl);
+
     const queryString = new URLSearchParams();
     queryString.append("code", code);
     queryString.append("grant_type", "authorization_code");
-    queryString.append(
-      "redirect_uri",
-      "http://localhost:8080/my-spotify-playlist"
-    );
+    queryString.append("redirect_uri", redirectUri);
     return axiosCustomer.post(`${reqToken}`, queryString, {
       headers: {
         "content-type": "application/x-www-form-urlencoded",
