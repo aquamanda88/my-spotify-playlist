@@ -21,6 +21,7 @@ const isLogin = ref(false);
 const apiHref = ref("");
 /** 選擇資料筆數 */
 const selectValue = ref("");
+/** 選單是否為開啟狀態 */
 const isActive = ref(false);
 
 /** 排行類型選項 */
@@ -97,13 +98,20 @@ async function handleAuthorization(
  * @returns 無回傳值
  */
 async function getArtistData(count?: string, duration?: durationNameKey) {
-  /** API 回傳的演出者資料 */
-  const res = await userTopReadService.getArtists(count, duration);
-  isLogin.value = Object.keys(errorMessage).length === 0;
-  // 判斷目前呼叫的 API 類型
-  if (res) {
-    apiHref.value = userTopReadService.getApiType(res?.data.href);
-    artistsResult.value = res?.data?.items;
+  /** url 參數 */
+  const params = new URLSearchParams(window.location.search);
+  // 如果網址有攜帶參數
+  if (params.has("code")) {
+    /** API 回傳的演出者資料 */
+    const res = await userTopReadService.getArtists(count, duration);
+    isLogin.value = Object.keys(errorMessage).length === 0;
+    // 判斷目前呼叫的 API 類型
+    if (res) {
+      apiHref.value = userTopReadService.getApiType(res?.data.href);
+      artistsResult.value = res?.data?.items;
+    }
+  } else {
+    isLogin.value = false;
   }
 }
 
@@ -115,26 +123,35 @@ async function getArtistData(count?: string, duration?: durationNameKey) {
  * @returns 無回傳值
  */
 async function getTrackData(count?: string, duration?: durationNameKey) {
-  /** API 回傳的曲目資料 */
-  const res = await userTopReadService.getTracks(count, duration);
-  isLogin.value = Object.keys(errorMessage).length === 0;
-  // 判斷目前呼叫的 API 類型
-  if (res) {
-    apiHref.value = userTopReadService.getApiType(res?.data.href);
-    tracksResult.value = res?.data?.items;
-    tracksResult.value.forEach((res) => {
-      // 取 API 回傳的音軌毫秒進行換算
-      if (typeof res.duration_ms === "number") {
-        /** 分鐘數 */
-        const minutes = Math.floor(res.duration_ms / 1000 / 60);
-        /** 初步計算的秒數值 */
-        let secondValue = Math.floor((res.duration_ms / 1000) % 60);
-        /** 秒數 */
-        const seconds =
-          secondValue.toString().length === 1 ? `0${secondValue}` : secondValue;
-        res.duration_ms = `${minutes}:${seconds}`;
-      }
-    });
+  /** url 參數 */
+  const params = new URLSearchParams(window.location.search);
+  // 如果網址有攜帶參數
+  if (params.has("code")) {
+    /** API 回傳的曲目資料 */
+    const res = await userTopReadService.getTracks(count, duration);
+    isLogin.value = Object.keys(errorMessage).length === 0;
+    // 判斷目前呼叫的 API 類型
+    if (res) {
+      apiHref.value = userTopReadService.getApiType(res?.data.href);
+      tracksResult.value = res?.data?.items;
+      tracksResult.value.forEach((res) => {
+        // 取 API 回傳的音軌毫秒進行換算
+        if (typeof res.duration_ms === "number") {
+          /** 分鐘數 */
+          const minutes = Math.floor(res.duration_ms / 1000 / 60);
+          /** 初步計算的秒數值 */
+          let secondValue = Math.floor((res.duration_ms / 1000) % 60);
+          /** 秒數 */
+          const seconds =
+            secondValue.toString().length === 1
+              ? `0${secondValue}`
+              : secondValue;
+          res.duration_ms = `${minutes}:${seconds}`;
+        }
+      });
+    }
+  } else {
+    isLogin.value = false;
   }
 }
 
@@ -178,7 +195,18 @@ function onSubmit() {
 
 <template>
   <div class="container">
+    <a v-if="isLogin" class="btn btn-main font-en-button mb-4" href="/">
+      <div class="d-flex align-items-center">
+        <img
+          class="me-2"
+          src="../assets/icons/icon_spotify_white.svg"
+          alt="spotifyIcon"
+        />
+        <span>LOGOUT</span>
+      </div>
+    </a>
     <a
+      v-else
       class="btn btn-main font-en-button mb-4"
       :href="apiConstant.AUTHORIZATION_URL"
     >
