@@ -21,6 +21,14 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // GET
     if (error.response.config.method === "get") {
+      // 403
+      if (error.response.status === 403) {
+        Swal.fire({
+          icon: "error",
+          title: `(${error.response.status})`,
+          text: error.response?.data,
+        });
+      }
       // 404
       if (error.response.status === 404) {
         Swal.fire({

@@ -367,7 +367,7 @@ function onSubmit() {
           <tr v-for="(item, index) in artistsResult" :key="item.uri">
             <th scope="row">{{ index + 1 }}</th>
             <td>
-              <img :src="item.images[2].url" alt="artistUrl" />
+              <img :src="item.images[2].url" class="infoImg" alt="artistUrl" />
             </td>
             <td class="contentInfo">
               <p class="songName">{{ item.name }}</p>
@@ -407,27 +407,35 @@ function onSubmit() {
           <tr v-for="(item, index) in tracksResult" :key="item.uri">
             <th scope="row">{{ index + 1 }}</th>
             <td>
-              <img :src="item.album.images[2].url" alt="albumUrl" />
+              <img
+                :src="item.album.images[2].url"
+                class="infoImg"
+                alt="albumUrl"
+              />
             </td>
             <td class="contentInfo">
-              <p class="songName">
-                {{ item.name }}
-              </p>
-              <p>
-                <span
-                  v-for="(artists, index) in item.artists"
-                  :key="artists.id"
-                  class="artistsName"
-                >
-                  <span v-if="item.artists.length !== 1">
-                    <span v-if="index !== 0">, </span>{{ artists.name }}</span
+              <a :href="item.external_urls.spotify" target="_blank">
+                <p class="songName">{{ item.name }}</p>
+                <p>
+                  <span
+                    v-for="(artists, index) in item.artists"
+                    :key="artists.id"
+                    class="artistsName"
                   >
-                  <span v-else>{{ artists.name }}</span>
-                </span>
-              </p>
+                    <span v-if="item.artists.length !== 1">
+                      <span v-if="index !== 0">, </span>{{ artists.name }}</span
+                    >
+                    <span v-else>{{ artists.name }}</span>
+                  </span>
+                </p>
+              </a>
             </td>
-            <td class="text-start">{{ item.album.name }}</td>
-            <td>{{ item.duration_ms }}</td>
+            <td class="text-start">
+              {{ item.album.name }}
+            </td>
+            <td>
+              {{ item.duration_ms }}
+            </td>
           </tr>
         </tbody>
       </table>
