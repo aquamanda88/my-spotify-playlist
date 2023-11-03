@@ -53,24 +53,6 @@
   color: $color;
 }
 
-/** Icons */
-@mixin common-icon($background-image) {
-  width: 16px;
-  height: 16px;
-  cursor: auto;
-  cursor: pointer;
-  background-image: url($background-image);
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: 16px 16px;
-  box-shadow: none;
-}
-@mixin icon-position($top, $right) {
-  position: absolute;
-  top: $top;
-  right: $right;
-}
-
 /** 繼承樣式 - input */
 %input-rounded-border {
   display: flex;

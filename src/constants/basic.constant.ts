@@ -1,4 +1,4 @@
-import { environment } from "@/environments/environment";
+import { environment } from '@/environments/environment';
 
 /** 網站基本資料 */
 export const basicConstant = {

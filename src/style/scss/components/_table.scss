@@ -1,0 +1,30 @@
+table {
+  tr,
+  td {
+    vertical-align: middle;
+  }
+  td {
+    .infoImg {
+      width: 64px;
+      height: 64px;
+    }
+  }
+  tfoot {
+    td {
+      text-align: center;
+    }
+    img {
+      width: 150px;
+    }
+  }
+}
+
+.songName {
+  display: block;
+}
+.contentInfo {
+  text-align: start;
+  p {
+    margin: 0;
+  }
+}

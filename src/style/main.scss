@@ -14,16 +14,7 @@
 @import "/src/style/scss/components/button";
 @import "/src/style/scss/components/card";
 @import "/src/style/scss/components/select";
+@import "/src/style/scss/components/table";
 
-.w-12 {
-  width: 12%;
-}
-.songName {
-  display: block;
-}
-.contentInfo {
-  text-align: start;
-  p {
-    margin: 0;
-  }
-}
+// pages
+@import "/src/style/scss/pages/home";

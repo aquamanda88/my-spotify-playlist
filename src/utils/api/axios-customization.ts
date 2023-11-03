@@ -1,8 +1,8 @@
-import axios from "axios";
-import Swal from "sweetalert2";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.spotify.com/v1/me/top/",
+  baseURL: 'https://api.spotify.com/v1/me',
 });
 
 axiosInstance.interceptors.request.use(
@@ -20,11 +20,11 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // GET
-    if (error.response.config.method === "get") {
+    if (error.response.config.method === 'get') {
       // 403
       if (error.response.status === 403) {
         Swal.fire({
-          icon: "error",
+          icon: 'error',
           title: `(${error.response.status})`,
           text: error.response?.data,
         });
@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
       // 404
       if (error.response.status === 404) {
         Swal.fire({
-          icon: "error",
+          icon: 'error',
           title: `(${error.response.status})`,
           text: error.message,
         });
@@ -40,16 +40,16 @@ axiosInstance.interceptors.response.use(
       // 其他
       else {
         Swal.fire({
-          icon: "error",
+          icon: 'error',
           title: `(${error.response.status})`,
           text: error.response.data.error?.message,
         });
       }
     }
     // POST
-    else if (error.response.config.method === "post") {
+    else if (error.response.config.method === 'post') {
       Swal.fire({
-        icon: "error",
+        icon: 'error',
         title: `(${error.response.status}) ${error.response.data.error}`,
         text: error.response.data?.error_description,
       });

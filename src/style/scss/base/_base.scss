@@ -29,29 +29,17 @@ a {
 }
 
 img {
+  width: 100%;
   height: auto;
 }
 
 body {
-  font-family: Roboto, "Noto Sans TC", sans-serif;
+  font-family: Roboto, "Noto Sans TC", sans-serif, Helvetica, Arial;
   background-color: $black;
 }
 
 main.container-fluid {
   padding: 16px 60px;
-}
-
-table {
-  tr,
-  td {
-    vertical-align: middle;
-  }
-  td {
-    .infoImg {
-      width: 64px;
-      height: 64px;
-    }
-  }
 }
 
 /** Text */

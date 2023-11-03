@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import userTopReadService, {
   errorMessage,
-} from "@/services/user-top-items.service";
-import apiService from "@/services/api.service";
-import { apiConstant, durationNameKey } from "@/constants/api";
+} from '@/services/user-top-items.service';
+import apiService from '@/services/api.service';
+import { apiConstant, durationNameKey } from '@/constants/api';
 import {
   UserTopReadArtistsRes,
   UserTopReadTracksRes,
-} from "@/utils/model/user-top-items.model";
-import { onMounted, ref } from "vue";
-import { Radio, Select } from "@/utils/model/user-top-items-utils.model";
-import { basicConstant } from "@/constants/basic.constant";
+} from '@/utils/model/user-top-items.model';
+import { onMounted, ref } from 'vue';
+import { Radio, Select } from '@/utils/model/user-top-items-utils.model';
+import { basicConstant } from '@/constants/basic.constant';
+import { UserInfoRes } from '@/utils/model/user-info.model';
 
 /** 是否為本地路由 */
-const isLocalUrl = window.location.href.includes("/localhost:8080/");
+const isLocalUrl = window.location.href.includes('/localhost:8080/');
 /** 目標導向網址 */
 const redirectUri =
   (isLocalUrl ? basicConstant.DEV_SERVER : basicConstant.PROD_SERVER) +
-  "/my-spotify-playlist";
+  '/my-spotify-playlist';
+/** 使用者名稱 */
+const userName = ref('');
 /** 演出者播放次數排名 */
 const artistsResult = ref<UserTopReadArtistsRes[]>([]);
 /** 曲目播放次數排名 */
@@ -25,58 +28,59 @@ const tracksResult = ref<UserTopReadTracksRes[]>([]);
 /** 是否為登入狀態 */
 const isLogin = ref(false);
 /** API 網址 */
-const apiHref = ref("");
+const apiHref = ref('');
 /** 選擇資料筆數 */
-const selectValue = ref("");
+const selectValue = ref('');
 /** 選單是否為開啟狀態 */
 const isActive = ref(false);
 
 /** 排行類型選項 */
 const dataTypeList: Radio[] = [
-  { label: "曲目", value: "tracks" },
-  { label: "演出者", value: "artists" },
+  { label: '曲目', value: 'tracks' },
+  { label: '演出者', value: 'artists' },
 ];
 
 /** 時間區間選項 */
 const timeRageList: Radio[] = [
-  { label: "近一個月", value: "short_term" },
-  { label: "近六個月", value: "medium_term" },
-  { label: "全部時間", value: "long_term" },
+  { label: '近一個月', value: 'short_term' },
+  { label: '近六個月', value: 'medium_term' },
+  { label: '全部時間', value: 'long_term' },
 ];
 
 /** 資料筆數選項 */
 const countList: Select[] = [
-  { label: "10", value: "10" },
-  { label: "15", value: "15" },
-  { label: "20", value: "20" },
-  { label: "25", value: "25" },
-  { label: "30", value: "30" },
-  { label: "35", value: "35" },
-  { label: "40", value: "40" },
-  { label: "45", value: "45" },
-  { label: "50", value: "50" },
+  { label: '10', value: '10' },
+  { label: '15', value: '15' },
+  { label: '20', value: '20' },
+  { label: '25', value: '25' },
+  { label: '30', value: '30' },
+  { label: '35', value: '35' },
+  { label: '40', value: '40' },
+  { label: '45', value: '45' },
+  { label: '50', value: '50' },
 ];
 
 onMounted(() => {
   /** url 參數 */
   const params = new URLSearchParams(window.location.search);
   // 若網址中含有 "code"
-  if (params.has("code")) {
+  if (params.has('code')) {
     /** 參數值 */
-    const code = params.get("code") as string;
+    const code = params.get('code') as string;
     handleAuthorization(code)
       .then((res) => {
-        window.sessionStorage.setItem("access_token", res.authorization);
-        window.sessionStorage.setItem("refresh_token", res.refreshToken);
+        window.sessionStorage.setItem('access_token', res.authorization);
         isLogin.value = true;
+        getUserInfo();
         return res;
       })
       .catch((fail) => {
         throw fail;
       });
   } else {
-    window.sessionStorage.removeItem("access_token");
+    window.sessionStorage.removeItem('access_token');
   }
+  userName.value = window.sessionStorage.getItem('userName') ?? '-';
 });
 
 /**
@@ -98,6 +102,17 @@ async function handleAuthorization(
 }
 
 /**
+ * 取得使用者資訊
+ *
+ * @returns 無回傳值
+ */
+async function getUserInfo() {
+  /** API 回傳的使用者資料 */
+  const res = (await userTopReadService.getUser()).data as UserInfoRes;
+  window.sessionStorage.setItem('userName', res.display_name);
+}
+
+/**
  * 取得演出者播放次數排名
  *
  * @param count - 顯示數量
@@ -108,7 +123,7 @@ async function getArtistData(count?: string, duration?: durationNameKey) {
   /** url 參數 */
   const params = new URLSearchParams(window.location.search);
   // 如果網址有攜帶參數
-  if (params.has("code")) {
+  if (params.has('code')) {
     /** API 回傳的演出者資料 */
     const res = await userTopReadService.getArtists(count, duration);
     isLogin.value = Object.keys(errorMessage).length === 0;
@@ -133,7 +148,7 @@ async function getTrackData(count?: string, duration?: durationNameKey) {
   /** url 參數 */
   const params = new URLSearchParams(window.location.search);
   // 如果網址有攜帶參數
-  if (params.has("code")) {
+  if (params.has('code')) {
     /** API 回傳的曲目資料 */
     const res = await userTopReadService.getTracks(count, duration);
     isLogin.value = Object.keys(errorMessage).length === 0;
@@ -143,7 +158,7 @@ async function getTrackData(count?: string, duration?: durationNameKey) {
       tracksResult.value = res?.data?.items;
       tracksResult.value.forEach((res) => {
         // 取 API 回傳的音軌毫秒進行換算
-        if (typeof res.duration_ms === "number") {
+        if (typeof res.duration_ms === 'number') {
           /** 分鐘數 */
           const minutes = Math.floor(res.duration_ms / 1000 / 60);
           /** 初步計算的秒數值 */
@@ -179,22 +194,22 @@ function checkOption($event: Event) {
  */
 function onSubmit() {
   /** 表單元素 */
-  const form = document.getElementById("searchForm") as HTMLFormElement;
+  const form = document.getElementById('searchForm') as HTMLFormElement;
   /** 取得選取排行類型 */
-  const typeValue = form.elements.namedItem("dataType") as HTMLInputElement;
+  const typeValue = form.elements.namedItem('dataType') as HTMLInputElement;
   /** 取得選取排行筆數 */
-  const count = selectValue.value ? selectValue.value : "20";
+  const count = selectValue.value ? selectValue.value : '20';
   /** 取得選取時間區間 */
   const timeRangeValue = (
-    form.elements.namedItem("timeRange") as HTMLInputElement
+    form.elements.namedItem('timeRange') as HTMLInputElement
   ).value as durationNameKey;
 
   // 如果排行類型為「曲目」
-  if (typeValue.value === "tracks") {
+  if (typeValue.value === 'tracks') {
     getTrackData(count, timeRangeValue);
   }
   // 如果排行類型為「演出者」
-  else if (typeValue.value === "artists") {
+  else if (typeValue.value === 'artists') {
     getArtistData(count, timeRangeValue);
   }
 }
@@ -209,11 +224,11 @@ function onSubmit() {
     >
       <div class="d-flex align-items-center">
         <img
-          class="me-2"
-          src="../assets/icons/icon_spotify_white.svg"
+          class="spotifyIcon me-2"
+          src="../assets/images/icons/Spotify_Icon_RGB_White.png"
           alt="spotifyIcon"
         />
-        <span>LOGOUT</span>
+        <span>Log out</span>
       </div>
     </a>
     <a
@@ -223,11 +238,11 @@ function onSubmit() {
     >
       <div class="d-flex align-items-center">
         <img
-          class="me-2"
-          src="../assets/icons/icon_spotify_white.svg"
+          class="spotifyIcon me-2"
+          src="../assets/images/icons/Spotify_Icon_RGB_White.png"
           alt="spotifyIcon"
         />
-        <span>LOGIN</span>
+        <span>Log in with Spotify</span>
       </div>
     </a>
     <div v-if="isLogin">
@@ -306,11 +321,11 @@ function onSubmit() {
                           @click="isActive = !isActive"
                         >
                           <div class="d-flex justify-content-between w-100">
-                            <p>{{ selectValue ? selectValue : "請選擇" }}</p>
+                            <p>{{ selectValue ? selectValue : '20' }}</p>
                             <img
                               :class="{ 'not-active': !isActive }"
                               class="icon-arrow-down-gray"
-                              src="../assets/icons/icon_down_arrow.svg"
+                              src="../assets/images/icons/icon_down_arrow.svg"
                               alt="arrow"
                             />
                           </div>
@@ -387,6 +402,16 @@ function onSubmit() {
             <td>{{ item.popularity }}</td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <img
+                src="../assets/images/logo/Spotify_Logo_RGB_White.png"
+                alt="Spotify_icon"
+              />
+            </td>
+          </tr>
+        </tfoot>
       </table>
       <table
         v-if="apiHref === 'tracks'"
@@ -399,7 +424,10 @@ function onSubmit() {
             <th scope="col" colspan="2">標題</th>
             <th scope="col">專輯</th>
             <th scope="col">
-              <img src="../assets/icons/icon_access_time.svg" alt="time" />
+              <img
+                src="../assets/images/icons/icon_access_time.svg"
+                alt="time"
+              />
             </th>
           </tr>
         </thead>
@@ -438,10 +466,17 @@ function onSubmit() {
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <img
+                src="../assets/images/logo/Spotify_Logo_RGB_White.png"
+                alt="Spotify_icon"
+              />
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
 </template>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>

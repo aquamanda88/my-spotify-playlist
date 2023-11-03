@@ -1,10 +1,24 @@
-import axiosCustomer from "../utils/api/axios-customization";
-import { durationNameKey } from "@/constants/api";
+import axiosCustomer from '../utils/api/axios-customization';
+import { durationNameKey } from '@/constants/api';
 
 export let errorMessage = {};
 
 /** 使用者喜愛內容服務 */
 export class UserTopReadService {
+  /**
+   * 取得使用者資料
+   *
+   * @returns API 回傳的資料
+   */
+  getUser() {
+    const token = window.sessionStorage.getItem('access_token');
+    return axiosCustomer.get('', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   /**
    * 取得常聽藝人資料
    *
@@ -14,8 +28,8 @@ export class UserTopReadService {
    */
   getArtists(count?: string, duration?: durationNameKey) {
     const value = this.formatValue(count, duration);
-    const token = window.sessionStorage.getItem("access_token");
-    return axiosCustomer.get(`artists${value}`, {
+    const token = window.sessionStorage.getItem('access_token');
+    return axiosCustomer.get(`/top/artists${value}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +45,8 @@ export class UserTopReadService {
    */
   getTracks(count?: string, duration?: durationNameKey) {
     const value = this.formatValue(count, duration);
-    const token = window.sessionStorage.getItem("access_token");
-    return axiosCustomer.get(`tracks${value}`, {
+    const token = window.sessionStorage.getItem('access_token');
+    return axiosCustomer.get(`/top/tracks${value}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -47,9 +61,9 @@ export class UserTopReadService {
    * @returns 要呼叫 API 的字串
    */
   formatValue(count?: string, duration?: durationNameKey) {
-    let value = "";
+    let value = '';
     if (count === undefined && duration === undefined) {
-      return (value = "");
+      return (value = '');
     } else if (count && duration === undefined) {
       return (value = `?limit=${count}`);
     } else if (count === undefined && duration) {
@@ -68,12 +82,12 @@ export class UserTopReadService {
    * @returns API 類型字串
    */
   getApiType(href: string): string {
-    const startLength = href.indexOf("v1/me/top/") + 10;
-    const endLength = href.indexOf("?");
+    const startLength = href.indexOf('v1/me/top/') + 10;
+    const endLength = href.indexOf('?');
     if (endLength !== -1) {
       return href.substring(startLength, endLength);
     } else {
-      return href.split("v1/me/top/")[1];
+      return href.split('v1/me/top/')[1];
     }
   }
 

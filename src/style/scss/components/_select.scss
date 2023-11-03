@@ -13,10 +13,11 @@
     @extend %common-focus;
     background-color: $gray-400;
     .icon-arrow-down-gray {
+      width: 24px;
       transition: 0.2s;
       transform: rotate(180deg);
-
       &.not-active {
+        width: 24px;
         transition: 0.2s;
         transform: none;
       }
@@ -24,6 +25,7 @@
   }
   &:not(:focus) {
     .icon-arrow-down-gray {
+      width: 24px;
       transition: 0.2s;
     }
   }
